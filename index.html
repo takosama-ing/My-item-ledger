@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#4e6b5b" />
+    <meta name="theme-color" content="#416350" />
     <meta name="description" content="離線優先的個人物品記錄本" />
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
@@ -12,7 +12,6 @@
   <body>
     <main class="app-shell">
       <header class="hero">
-        <p class="eyebrow">OWNED, NOT FORGOTTEN</p>
         <div class="heading-row">
           <div>
             <h1>我的物品帳本</h1>
@@ -32,6 +31,7 @@
         <div id="category-filters" class="filter-row" aria-label="分類篩選"></div>
         <div class="utility-row">
           <button id="open-categories" class="text-button">管理分類</button>
+          <button id="open-settings" class="text-button">設定</button>
           <button id="export-data" class="text-button">匯出備份</button>
           <label class="text-button import-label">匯入備份<input id="import-data" type="file" accept="application/json" hidden /></label>
         </div>
@@ -42,7 +42,7 @@
     </main>
 
     <dialog id="item-dialog" class="sheet">
-      <form id="item-form" method="dialog">
+      <form id="item-form">
         <div class="sheet-header"><h2 id="item-dialog-title">新增物品</h2><button type="button" class="icon-button" data-close="item-dialog" aria-label="關閉">×</button></div>
         <input id="item-id" type="hidden" />
         <label>物品名稱<input id="item-name" required maxlength="60" autocomplete="off" placeholder="例如：降噪耳機" /></label>
@@ -53,9 +53,14 @@
         <div class="two-columns">
           <label>幣種<select id="item-currency"><option value="CNY">人民幣（CNY）</option><option value="USD">美元（USD）</option></select></label>
           <label>分類<select id="item-category"></select></label>
-          <label>備注<textarea id="item-note" maxlength="300" placeholder="加入備注" ></textarea> </label>
         </div>
-        <p class="field-hint">購入日算第 1 天；日均單價會每天自動更新。</p>
+        <div class="two-columns">
+          <label>自訂 Emoji<input id="item-icon" maxlength="12" autocomplete="off" placeholder="例如：🎒" /></label>
+          <label>物品照片<input id="item-photo" type="file" accept="image/*" /></label>
+        </div>
+        <div id="photo-preview" class="photo-preview" hidden><img id="photo-preview-image" alt="物品照片預覽" /><button id="clear-photo" type="button" class="text-button">移除照片</button></div>
+        <label>備註<textarea id="item-note" maxlength="300" placeholder="例如：購買原因、保固到期日"></textarea></label>
+        <p class="field-hint">購入日算第 1 天；照片會壓縮後只存於這台裝置。</p>
         <div class="dialog-actions"><button type="button" class="secondary-button" data-close="item-dialog">取消</button><button class="primary-button" type="submit">儲存物品</button></div>
       </form>
     </dialog>
@@ -63,24 +68,30 @@
     <dialog id="category-dialog" class="sheet">
       <div class="sheet-header"><h2>管理分類</h2><button type="button" class="icon-button" data-close="category-dialog" aria-label="關閉">×</button></div>
       <form id="category-form" class="category-form">
-        <label class="visually-hidden" for="category-name">新分類名稱</label>
-        <input id="category-name" required maxlength="24" autocomplete="off" placeholder="新分類名稱" />
-        <label class="visually-hidden" for="category-icon">圖示</label>
-        <select id="category-icon" aria-label="分類圖示"></select>
+        <label class="visually-hidden" for="category-name">新分類名稱</label><input id="category-name" required maxlength="24" autocomplete="off" placeholder="新分類名稱" />
+        <label class="visually-hidden" for="category-icon">圖示</label><select id="category-icon" aria-label="分類圖示"></select>
         <button class="primary-button" type="submit">新增</button>
       </form>
       <div id="category-list" class="category-list"></div>
     </dialog>
 
+    <dialog id="settings-dialog" class="sheet">
+      <form id="settings-form">
+        <div class="sheet-header"><h2>設定</h2><button type="button" class="icon-button" data-close="settings-dialog" aria-label="關閉">×</button></div>
+        <label>頁面主色調<input id="theme-color" type="color" value="#416350" /></label>
+        <p class="field-hint">此設定只會儲存在目前這台裝置與此網址中。</p>
+        <div class="dialog-actions"><button type="button" class="secondary-button" data-close="settings-dialog">取消</button><button class="primary-button" type="submit">套用主色</button></div>
+      </form>
+    </dialog>
+
     <template id="item-template">
       <article class="item-card">
         <div class="item-icon"></div>
-        <div class="item-main"><h2></h2><p class="item-meta"></p></div>
+        <div class="item-main"><h2></h2><p class="item-meta"></p><p class="item-note" hidden></p></div>
         <div class="item-price"><strong></strong><span></span></div>
         <button class="more-button" aria-label="編輯物品">⋯</button>
       </article>
     </template>
-
     <script src="app.js"></script>
   </body>
 </html>
