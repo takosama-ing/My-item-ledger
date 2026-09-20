@@ -1,7 +1,7 @@
 /* Browser-local database. No item data is sent to GitHub or a server. */
 const STORAGE_KEY = "item-ledger-v1";
 const DEFAULT_SETTINGS = { primaryColor: "#416350" };
-const ICONS = ["📦", "👕", "💻", "🎮", "📚", "👜", "🍳", "🪴", "🎧", "⌚", "🧴", "✨"];
+const ICONS = ["📦", "👕", "💻", "🎮", "🐈‍⬛", "👜", "🧸", "🍳", "📚", "🪴", "🎧", "⌚", "🧴", "✨"];
 const DEFAULT_CATEGORIES = [
   { id: "cat-daily", name: "日常", icon: "📦" }, { id: "cat-clothing", name: "服飾", icon: "👕" }, { id: "cat-digital", name: "數碼", icon: "💻" },
 ];
@@ -9,7 +9,7 @@ const DEFAULT_CATEGORIES = [
 /* Change these numbers later if your own definition of "low/high daily cost" differs. */
 const DAILY_COST_BANDS = {
   CNY: [{ max: 1, tone: "low" }, { max: 5, tone: "medium" }, { max: Infinity, tone: "high" }],
-  USD: [{ max: 0.25, tone: "low" }, { max: 1, tone: "medium" }, { max: Infinity, tone: "high" }],
+  USD: [{ max: 0.2, tone: "low" }, { max: 1, tone: "medium" }, { max: Infinity, tone: "high" }],
 };
 
 let state = loadState();
