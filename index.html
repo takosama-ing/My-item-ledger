@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#4e6b5b" />
+    <meta name="description" content="離線優先的個人物品記錄本" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>我的物品帳本</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="eyebrow">OWNED, NOT FORGOTTEN</p>
+        <div class="heading-row">
+          <div>
+            <h1>我的物品帳本</h1>
+            <p id="today-label" class="muted"></p>
+          </div>
+          <button id="open-add-item" class="round-button" aria-label="新增物品">＋</button>
+        </div>
+      </header>
+
+      <section class="summary" aria-label="帳本摘要">
+        <article><span>物品數</span><strong id="item-count">0</strong></article>
+        <article><span>人民幣總價</span><strong id="cny-total">¥0.00</strong></article>
+        <article><span>美元總價</span><strong id="usd-total">US$0.00</strong></article>
+      </section>
+
+      <section class="toolbar" aria-label="篩選與管理">
+        <div id="category-filters" class="filter-row" aria-label="分類篩選"></div>
+        <div class="utility-row">
+          <button id="open-categories" class="text-button">管理分類</button>
+          <button id="export-data" class="text-button">匯出備份</button>
+          <label class="text-button import-label">匯入備份<input id="import-data" type="file" accept="application/json" hidden /></label>
+        </div>
+      </section>
+
+      <section id="item-list" class="item-list" aria-live="polite"></section>
+      <button id="empty-add-item" class="empty-state" hidden>還沒有物品，新增第一筆紀錄</button>
+    </main>
+
+    <dialog id="item-dialog" class="sheet">
+      <form id="item-form" method="dialog">
+        <div class="sheet-header"><h2 id="item-dialog-title">新增物品</h2><button type="button" class="icon-button" data-close="item-dialog" aria-label="關閉">×</button></div>
+        <input id="item-id" type="hidden" />
+        <label>物品名稱<input id="item-name" required maxlength="60" autocomplete="off" placeholder="例如：降噪耳機" /></label>
+        <div class="two-columns">
+          <label>購入日期<input id="item-purchased-on" required type="date" /></label>
+          <label>價格<input id="item-price" required type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" /></label>
+        </div>
+        <div class="two-columns">
+          <label>幣種<select id="item-currency"><option value="CNY">人民幣（CNY）</option><option value="USD">美元（USD）</option></select></label>
+          <label>分類<select id="item-category"></select></label>
+          <label>備注<textarea id="item-note" maxlength="300" placeholder="加入備注" ></textarea> </label>
+        </div>
+        <p class="field-hint">購入日算第 1 天；日均單價會每天自動更新。</p>
+        <div class="dialog-actions"><button type="button" class="secondary-button" data-close="item-dialog">取消</button><button class="primary-button" type="submit">儲存物品</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="category-dialog" class="sheet">
+      <div class="sheet-header"><h2>管理分類</h2><button type="button" class="icon-button" data-close="category-dialog" aria-label="關閉">×</button></div>
+      <form id="category-form" class="category-form">
+        <label class="visually-hidden" for="category-name">新分類名稱</label>
+        <input id="category-name" required maxlength="24" autocomplete="off" placeholder="新分類名稱" />
+        <label class="visually-hidden" for="category-icon">圖示</label>
+        <select id="category-icon" aria-label="分類圖示"></select>
+        <button class="primary-button" type="submit">新增</button>
+      </form>
+      <div id="category-list" class="category-list"></div>
+    </dialog>
+
+    <template id="item-template">
+      <article class="item-card">
+        <div class="item-icon"></div>
+        <div class="item-main"><h2></h2><p class="item-meta"></p></div>
+        <div class="item-price"><strong></strong><span></span></div>
+        <button class="more-button" aria-label="編輯物品">⋯</button>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
